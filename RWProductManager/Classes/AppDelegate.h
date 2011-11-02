@@ -25,5 +25,7 @@
 
 @property (copy)  NSString* invokeString;
 
+extern BOOL DeviceIsPad(void);
+
 @end
 

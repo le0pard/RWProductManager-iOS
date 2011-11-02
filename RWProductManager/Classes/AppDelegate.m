@@ -17,6 +17,26 @@
 
 @synthesize invokeString;
 
+BOOL DeviceIsPad(void)
+{
+    
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)])
+	{
+        return([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);	
+	}
+    
+    return(NO);
+}
+
++(NSString*) startPage 
+{
+    if (DeviceIsPad()){
+        return @"ipad/index.html";
+    } else {
+        return @"iphone/index.html";
+    }
+}
+
 - (id) init
 {	
 	/** If you need to do any extra app-specific initialization, you can do it here
@@ -102,11 +122,6 @@
 - (BOOL) execute:(InvokedUrlCommand*)command
 {
 	return [ super execute:command];
-}
-
-- (void)dealloc
-{
-	[ super dealloc ];
 }
 
 @end
