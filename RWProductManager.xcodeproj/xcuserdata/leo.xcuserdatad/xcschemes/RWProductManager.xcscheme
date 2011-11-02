@@ -13,7 +13,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B318AB9B14618AAD002EAA6F"
+               BlueprintIdentifier = "B3EC45FC1461BA1000DA9638"
                BuildableName = "RWProductManager.app"
                BlueprintName = "RWProductManager"
                ReferencedContainer = "container:RWProductManager.xcodeproj">
@@ -31,7 +31,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B318AB9B14618AAD002EAA6F"
+            BlueprintIdentifier = "B3EC45FC1461BA1000DA9638"
             BuildableName = "RWProductManager.app"
             BlueprintName = "RWProductManager"
             ReferencedContainer = "container:RWProductManager.xcodeproj">
@@ -49,7 +49,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B318AB9B14618AAD002EAA6F"
+            BlueprintIdentifier = "B3EC45FC1461BA1000DA9638"
             BuildableName = "RWProductManager.app"
             BlueprintName = "RWProductManager"
             ReferencedContainer = "container:RWProductManager.xcodeproj">
@@ -67,7 +67,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B318AB9B14618AAD002EAA6F"
+            BlueprintIdentifier = "B3EC45FC1461BA1000DA9638"
             BuildableName = "RWProductManager.app"
             BlueprintName = "RWProductManager"
             ReferencedContainer = "container:RWProductManager.xcodeproj">

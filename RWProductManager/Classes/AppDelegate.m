@@ -124,4 +124,9 @@ BOOL DeviceIsPad(void)
 	return [ super execute:command];
 }
 
+- (void)dealloc
+{
+	[ super dealloc ];
+}
+
 @end
