@@ -56,7 +56,7 @@ BOOL DeviceIsPad(void)
 	{
 		NSURL *url = [launchOptions objectForKey:[keyArray objectAtIndex:0]];
 		self.invokeString = [url absoluteString];
-		NSLog(@"RWProductManager launchOptions = %@",url);
+		//NSLog(@"RWProductManager launchOptions = %@",url);
 	}
 	
 	return [super application:application didFinishLaunchingWithOptions:launchOptions];

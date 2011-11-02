@@ -480,6 +480,7 @@
 				B318ABE814618AAF002EAA6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
