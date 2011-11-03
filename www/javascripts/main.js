@@ -9,21 +9,25 @@ RWProductManager = {
   },
   init: function(){
     document.addEventListener("deviceready", this.onDeviceReady, false);
-    this.init_elements();
+    this.initElements();
   },
-  init_elements: function(){
-    this.init_states();
+  initElements: function(){
+    this.initStates();
     $('#login_button_settings').click(function(event){
       if (RWProductManager.getOpenidIdentifier()){
         RWProductManager.deleteOpenidIdentifier();
       } else {
         RWProductManager.openOauthUrl();
       }
-      RWProductManager.init_states();
+      RWProductManager.initStates();
       return false;
     });
+    
+    if ($('#pivotal_list_view').length > 0){
+      RWProductManager.getPivotalStories();
+    }
   },
-  init_states: function(){
+  initStates: function(){
     if (RWProductManager.getOpenidIdentifier()){
       $('#login_button_settings .ui-btn-text').text('Revoke access from system');
       $('#login_button_settings .ui-icon').removeClass('ui-icon-info').addClass('ui-icon-delete');
@@ -32,6 +36,27 @@ RWProductManager = {
       $('#login_button_settings .ui-icon').removeClass('ui-icon-delete').addClass('ui-icon-info');
     }
   },
+  getPivotalStories: function(){
+    $.ajax({
+      url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
+      dataType: 'json',
+      success: function(data) {
+        var list_data = '';
+        $.each(data, function(index, value) { 
+          if (value.title != null){
+            list_data += '<li>';
+            list_data += '<a href="#">';
+            list_data += value.title;
+            list_data += '</a>';
+            list_data += '</li>';
+          }
+        });
+        $('#pivotal_list_view').html(list_data);
+        $("#main_product_manager").page("destroy").page();
+      }
+    });
+  },
+  
   onDeviceReady: function(){
     if (RWProductManager.childBrowser == null){
       RWProductManager.childBrowser = ChildBrowser.install();
@@ -42,6 +67,7 @@ RWProductManager = {
       RWProductManager.childBrowser.onOpenExternal = function(){root.childBrowseronOpen();};
     }
   },
+  
   openChildBrowser: function(url)
   {
     try {
@@ -71,7 +97,7 @@ RWProductManager = {
       if (null !== link_results){
         if (link_results[1]){
           RWProductManager.setOpenidIdentifier(link_results[1]);
-          RWProductManager.init_states();
+          RWProductManager.initStates();
           RWProductManager.childBrowser.close();
         }
       }
@@ -89,5 +115,6 @@ $(document).bind("pageload", function(){
   RWProductManager.init();
 });
 $(function() {
+  RWProductManager.init();
   document.addEventListener("deviceready", RWProductManager.onDeviceReady, false);
 });
