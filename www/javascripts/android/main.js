@@ -1,6 +1,11 @@
+var root = this;
+root.childBrowseronClose = function(){
+	
+};
+
 RWProductManager = {
   childBrowser: null,
-  openIdHost: "localhost:3000",
+  openIdHost: "192.168.1.2:3000",
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
   },
@@ -58,7 +63,7 @@ RWProductManager = {
   
   onDeviceReady: function(){
     if (RWProductManager.childBrowser == null){
-      RWProductManager.childBrowser = ChildBrowser.install();
+      RWProductManager.childBrowser = window.plugins.childBrowser;
     }
     if (RWProductManager.childBrowser != null){
       RWProductManager.childBrowser.onLocationChange = function(loc){ RWProductManager.childBrowserLocationChange(loc); };
@@ -70,7 +75,7 @@ RWProductManager = {
   openChildBrowser: function(url)
   {
     try {
-      RWProductManager.childBrowser.showWebPage(url);
+      RWProductManager.childBrowser.showWebPage(url, { showLocationBar: false });
     } catch (err) {
       alert(err);
     }
