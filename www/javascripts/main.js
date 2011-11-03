@@ -1,6 +1,12 @@
 RWProductManager = {
   childBrowser: null,
-  openIDHost: "railsware.com",
+  openIdHost: "localhost:3000",
+  openIDLink: function(){
+    return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
+  },
+  openIDLinkRegex: function(){
+   return "http:\\/\\/" + RWProductManager.openIdHost + "\\/api\\/mobile\\/user_sessions\\?openid_identifier=(.*)";
+  },
 /*  
   oAuthRequestUrl: 'https://www.google.com/accounts/OAuthGetRequestToken',
   oAuthAuthorizeUrl: 'https://www.google.com/accounts/OAuthAuthorizeToken',
@@ -31,16 +37,24 @@ RWProductManager = {
     }
   },
   openOauthUrl: function(){
-    RWProductManager.openChildBrowser('https://www.google.com/accounts/o8/id?hd=' + RWProductManager.openIDHost);
+    RWProductManager.openChildBrowser(RWProductManager.openIDLink());
   },
   childBrowserLocationChange: function(loc){
-    alert("In index.html new loc = " + loc);
+    if (loc){
+      var link = new RegExp(RWProductManager.openIDLinkRegex(), "i");
+      var link_results = loc.match(link);
+      if (null !== link_results){
+        if (link_results[1]){
+          RWProductManager.childBrowser.close();
+        }
+      }
+    }
   },
   childBrowseronClose: function(){
-    alert("In index.html child browser closed");
+    /*alert("In index.html child browser closed");*/
   },
   childBrowseronOpen: function(){
-    alert("In index.html onOpenExternal");
+    /*alert("In index.html onOpenExternal");*/
   }
 };
 
