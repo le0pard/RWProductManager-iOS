@@ -7,21 +7,35 @@ RWProductManager = {
   openIDLinkRegex: function(){
    return "http:\\/\\/" + RWProductManager.openIdHost + "\\/api\\/mobile\\/user_sessions\\?openid_identifier=(.*)";
   },
-/*  
-  oAuthRequestUrl: 'https://www.google.com/accounts/OAuthGetRequestToken',
-  oAuthAuthorizeUrl: 'https://www.google.com/accounts/OAuthAuthorizeToken',
-  oAuthAccessUrl: 'https://www.google.com/accounts/OAuthGetAccessToken',
-  oAuthConsumerKey: "115230319812-s6o70odjfqviatd7c88nhgah6701kupm.apps.googleusercontent.com",
-  oAuthConsumer_secret: 'dp2NJzyPMUVEw2JZC69W4deJ',
-  oAuthScope: null,
-  oAuthCAppName: 'Railsware Product Manager'
-*/  
   init: function(){
     document.addEventListener("deviceready", this.onDeviceReady, false);
+    this.init_elements();
+  },
+  init_elements: function(){
+    this.init_states();
+    $('#login_button_settings').click(function(event){
+      if (RWProductManager.getOpenidIdentifier()){
+        RWProductManager.deleteOpenidIdentifier();
+      } else {
+        RWProductManager.openOauthUrl();
+      }
+      RWProductManager.init_states();
+      return false;
+    });
+  },
+  init_states: function(){
+    if (RWProductManager.getOpenidIdentifier()){
+      $('#login_button_settings .ui-btn-text').text('Revoke access from system');
+      $('#login_button_settings .ui-icon').removeClass('ui-icon-info').addClass('ui-icon-delete');
+    } else {
+      $('#login_button_settings .ui-btn-text').text('Login to system');
+      $('#login_button_settings .ui-icon').removeClass('ui-icon-delete').addClass('ui-icon-info');
+    }
   },
   onDeviceReady: function(){
-    /*navigator.notification.alert("PhoneGap is working");*/
-    RWProductManager.childBrowser = ChildBrowser.install();
+    if (RWProductManager.childBrowser == null){
+      RWProductManager.childBrowser = ChildBrowser.install();
+    }
     if (RWProductManager.childBrowser != null){
       RWProductManager.childBrowser.onLocationChange = function(loc){ RWProductManager.childBrowserLocationChange(loc); };
       RWProductManager.childBrowser.onClose = function(){root.childBrowseronClose()};
@@ -36,6 +50,17 @@ RWProductManager = {
       alert(err);
     }
   },
+  
+  getOpenidIdentifier: function(){
+    return window.localStorage.getItem("openid_identifier");
+  },
+  setOpenidIdentifier: function(openid_identifier){
+    window.localStorage.setItem("openid_identifier", openid_identifier);
+  },
+  deleteOpenidIdentifier: function(){
+    window.localStorage.removeItem("openid_identifier");
+  },
+  
   openOauthUrl: function(){
     RWProductManager.openChildBrowser(RWProductManager.openIDLink());
   },
@@ -45,6 +70,8 @@ RWProductManager = {
       var link_results = loc.match(link);
       if (null !== link_results){
         if (link_results[1]){
+          RWProductManager.setOpenidIdentifier(link_results[1]);
+          RWProductManager.init_states();
           RWProductManager.childBrowser.close();
         }
       }
@@ -58,6 +85,9 @@ RWProductManager = {
   }
 };
 
-$(function() {
+$(document).bind("pageload", function(){
   RWProductManager.init();
+});
+$(function() {
+  document.addEventListener("deviceready", RWProductManager.onDeviceReady, false);
 });
