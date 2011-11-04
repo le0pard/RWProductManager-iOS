@@ -25,7 +25,7 @@ ChildBrowser.LOCATION_CHANGED_EVENT = 1;
 ChildBrowser.prototype.showWebPage = function(url, options) {
     if (options === null || options === "undefined") {
         var options = new Object();
-        options.showLocationBar = true;
+        options.showLocationBar = false;
     }
     PhoneGap.exec(this._onEvent, null, "ChildBrowser", "showWebPage", [url, options]);
 };

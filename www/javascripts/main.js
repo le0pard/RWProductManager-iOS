@@ -1,6 +1,6 @@
 RWProductManager = {
   childBrowser: null,
-  openIdHost: "localhost:3000",
+  openIdHost: "10.0.1.171:3000",
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
   },
@@ -41,6 +41,7 @@ RWProductManager = {
       url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
       dataType: 'json',
       success: function(data) {
+        $('#pivotal_list_view').html('');
         var list_data = '';
         $.each(data, function(index, value) { 
           if (value.title != null){
@@ -51,16 +52,21 @@ RWProductManager = {
             list_data += '</li>';
           }
         });
-        $('#pivotal_list_view').html(list_data).listview();
+        $('#pivotal_list_view').html(list_data).attr("data-role", "listview").listview();
+        $('#pivotal_list_view').listview('refresh');
       }
     });
   },
   
   onDeviceReady: function(){
-    if (RWProductManager.childBrowser == null){
-      RWProductManager.childBrowser = ChildBrowser.install();
+    if (!RWProductManager.childBrowser){
+      if ((typeof window.plugins !== "undefined" && window.plugins !== null)) {
+        RWProductManager.childBrowser = window.plugins.childBrowser;
+      } else {
+        RWProductManager.childBrowser = ChildBrowser.install();
+      }
     }
-    if (RWProductManager.childBrowser != null){
+    if (RWProductManager.childBrowser){
       RWProductManager.childBrowser.onLocationChange = function(loc){ RWProductManager.childBrowserLocationChange(loc); };
       RWProductManager.childBrowser.onClose = function(){root.childBrowseronClose()};
       RWProductManager.childBrowser.onOpenExternal = function(){root.childBrowseronOpen();};
