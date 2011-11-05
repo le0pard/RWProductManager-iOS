@@ -26,6 +26,9 @@ RWProductManager = {
     if ($('#pivotal_list_view').length > 0){
       RWProductManager.getPivotalStories();
     }
+    if ($('#time_list_view').length > 0){
+      RWProductManager.getTimeTable();
+    }
   },
   initStates: function(){
     if (RWProductManager.getOpenidIdentifier()){
@@ -69,6 +72,42 @@ RWProductManager = {
         
         $('#pivotal_list_view').html(list_data).attr("data-role", "collapsible-set").addClass('ui-collapsible-set');
         $('#pivotal_list_view div[data-role="collapsible"]').collapsible();
+      }
+    });
+  },
+  getTimeTable: function(){
+    $('#time_list_view').html('');
+    $.ajax({
+      url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
+      dataType: 'json',
+      success: function(data) {
+        var list_data = '';
+        $.each(data, function(index, value) { 
+          if (value.title != null){
+            list_data += '<div data-role="collapsible">';
+            list_data += '<h3>' + value.title + '</h3>';
+            list_data += '<p>';
+            if (value.url){
+              list_data += '<p><strong>Title:</strong> <a href="' + value.url + '" target="_blank">';
+              list_data += value.title;
+              list_data += '</a></p>';
+            } else {
+              list_data += '<p><strong>Title:</strong> ' + value.title + '</p>';
+            }
+            list_data += '<p><strong>Status:</strong> ' + value.status + '</p>';
+            if (value.story_type){
+              list_data += '<p><strong>Type:</strong> ' + value.story_type + '</p>';
+            }
+            if (value.description){
+              list_data += '<p><strong>Descr:</strong> ' + value.description + '</p>';
+            }
+            list_data += '</p>';
+            list_data += '</div>';
+          }
+        });
+        
+        $('#time_list_view').html(list_data).attr("data-role", "listview").listview();
+        $('#time_list_view').listview('refresh');
       }
     });
   },
