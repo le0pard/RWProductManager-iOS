@@ -1,6 +1,6 @@
 RWProductManager = {
   childBrowser: null,
-  openIdHost: "10.0.1.171:3000",
+  openIdHost: "127.0.0.1:3000",
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
   },
@@ -37,23 +37,38 @@ RWProductManager = {
     }
   },
   getPivotalStories: function(){
+    $('#pivotal_list_view').html('');
     $.ajax({
       url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
       dataType: 'json',
       success: function(data) {
-        $('#pivotal_list_view').html('');
         var list_data = '';
         $.each(data, function(index, value) { 
           if (value.title != null){
-            list_data += '<li>';
-            list_data += '<a href="#">';
-            list_data += value.title;
-            list_data += '</a>';
-            list_data += '</li>';
+            list_data += '<div data-role="collapsible">';
+            list_data += '<h3>' + value.title + '</h3>';
+            list_data += '<p>';
+            if (value.url){
+              list_data += '<p><strong>Title:</strong> <a href="' + value.url + '" target="_blank">';
+              list_data += value.title;
+              list_data += '</a></p>';
+            } else {
+              list_data += '<p><strong>Title:</strong> ' + value.title + '</p>';
+            }
+            list_data += '<p><strong>Status:</strong> ' + value.status + '</p>';
+            if (value.story_type){
+              list_data += '<p><strong>Type:</strong> ' + value.story_type + '</p>';
+            }
+            if (value.description){
+              list_data += '<p><strong>Descr:</strong> ' + value.description + '</p>';
+            }
+            list_data += '</p>';
+            list_data += '</div>';
           }
         });
-        $('#pivotal_list_view').html(list_data).attr("data-role", "listview").listview();
-        $('#pivotal_list_view').listview('refresh');
+        
+        $('#pivotal_list_view').html(list_data).attr("data-role", "collapsible-set").addClass('ui-collapsible-set');
+        $('#pivotal_list_view div[data-role="collapsible"]').collapsible();
       }
     });
   },
@@ -120,6 +135,14 @@ $(document).bind("pageload", function(){
   RWProductManager.init();
 });
 $(function() {
+  /*
+  $(document).ajaxStart(function() {
+    $.mobile.showPageLoadingMsg();
+  });
+  $(document).ajaxStop(function() {
+    $.mobile.hidePageLoadingMsg();
+  });
+  */
   RWProductManager.init();
   document.addEventListener("deviceready", RWProductManager.onDeviceReady, false);
 });
