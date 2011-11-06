@@ -1,6 +1,6 @@
 RWProductManager = {
   childBrowser: null,
-  openIdHost: "127.0.0.1:3000",
+  openIdHost: "192.168.1.7:3000",
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
   },
@@ -29,8 +29,14 @@ RWProductManager = {
     if ($('#time_list_view').length > 0){
       RWProductManager.getTimeTable();
     }
+    if ($('#vacations_list_view').length > 0){
+      RWProductManager.getVacations();
+    }
   },
   initStates: function(){
+    $.ajaxSetup({
+      timeout: 3000
+    });
     if (RWProductManager.getOpenidIdentifier()){
       $('#login_button_settings .ui-btn-text').text('Revoke access from system');
       $('#login_button_settings .ui-icon').removeClass('ui-icon-info').addClass('ui-icon-delete');
@@ -77,6 +83,7 @@ RWProductManager = {
   },
   getTimeTable: function(){
     $('#time_list_view').html('');
+    /*
     $.ajax({
       url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
       dataType: 'json',
@@ -108,6 +115,28 @@ RWProductManager = {
         
         $('#time_list_view').html(list_data).attr("data-role", "listview").listview();
         $('#time_list_view').listview('refresh');
+      }
+    });
+    */
+  },
+  getVacations: function(){
+    $('#vacations_list_view').html('');
+    $.ajax({
+      url: "http://" + RWProductManager.openIdHost + "/api/mobile/vacations.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
+      dataType: 'json',
+      success: function(data) {
+        var list_data = '';
+        $.each(data, function(index, value) { 
+          list_data += '<li>';
+          list_data += '<a href="#">';
+          list_data += value.reason;
+          list_data += ' (' + value.from_date + ' ' + value.to_date + ')';
+          list_data += '</a>';
+          list_data += '</li>';
+        });
+        
+        $('#vacations_list_view').html(list_data).attr("data-role", "listview").listview();
+        $('#vacations_list_view').listview('refresh');
       }
     });
   },

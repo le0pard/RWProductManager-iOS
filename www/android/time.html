@@ -12,8 +12,8 @@
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery-1.6.4.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery.mobile-1.0rc2.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/json2.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../javascripts/phonegap-1.1.0.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../javascripts/ChildBrowser.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../javascripts/android/phonegap-1.1.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../javascripts/android/childbrowser.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/main.js"></script>
 <!--
   <script type="text/javascript">
@@ -58,18 +58,49 @@
     <div id="main_product_manager" data-role="page" data-title="RW Product Manager">
 
     	<div data-role="header" data-position="fixed">
-    		<h1>Pivotal tasks</h1>
+    		<h1>Timetable</h1>
     	</div><!-- /header -->
 
     	<div data-role="content">
-    	  <div id="pivotal_list_view"></div>		
+    	  <div data-role="fieldcontain">
+          <fieldset data-role="controlgroup">
+          	<legend>Date:</legend>
+              <label for="select-choice-month">Month</label>
+              <select name="select-choice-month" id="select-choice-month">
+          	    <option value="">Month</option>
+          	    <option value="1">January</option>
+          	    <!-- etc. -->
+              </select>
+
+          	  <label for="select-choice-day">Day</label>
+              <select name="select-choice-day" id="select-choice-day">
+          	    <option value="">Day</option>
+          	    <option value="1">1</option>
+          	    <!-- etc. -->
+              </select>
+
+              <label for="select-choice-year">Year</label>
+              <select name="select-choice-year" id="select-choice-year">
+          	    <option value="">Year</option>
+          	    <option value="2010">2010</option>
+          	    <option value="2011">2011</option>
+          	    <option value="2012">2012</option>
+          	    <option value="2013">2013</option>
+          	    <option value="2014">2014</option>
+          	    <option value="2015">2015</option>
+          	    <option value="2016">2016</option>
+          	    <!-- etc. -->
+              </select>
+          </fieldset>
+        </div>
+    	  <div id="time_list_view"></div>		
     	</div><!-- /content -->
 
     	<div data-role="footer" data-position="fixed">
     		<div data-role="navbar" data-iconpos="bottom">
       		<ul>
-      			<li><a href="index.html" data-icon="home" data-transition="fade" class="ui-btn-active">Home</a></li>
-      			<li><a href="time.html" data-icon="grid" data-transition="fade">Time</a></li>
+      			<li><a href="index.html" data-icon="home" data-transition="fade">Home</a></li>
+      			<li><a href="time.html" data-icon="grid" data-transition="fade" class="ui-btn-active">Time</a></li>
       			<li><a href="vacations.html" data-icon="info" data-transition="fade">Vacations</a></li>
       			<li><a href="settings.html" data-icon="gear" data-transition="fade">Settings</a></li>
       		</ul>
