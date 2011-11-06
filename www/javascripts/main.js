@@ -1,11 +1,17 @@
 RWProductManager = {
   childBrowser: null,
-  openIdHost: "192.168.1.7:3000",
+  openIdHost: "localhost:3000",
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
   },
   openIDLinkRegex: function(){
    return "http:\\/\\/" + RWProductManager.openIdHost + "\\/api\\/mobile\\/user_sessions\\?openid_identifier=(.*)";
+  },
+  defaultHeaders: function(){
+    return {
+      "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
+      "Accept": "application/json,text/javascript,application/javascript,text/html"
+    };
   },
   init: function(){
     document.addEventListener("deviceready", this.onDeviceReady, false);
@@ -26,16 +32,23 @@ RWProductManager = {
     if ($('#pivotal_list_view').length > 0){
       RWProductManager.getPivotalStories();
     }
-    if ($('#time_list_view').length > 0){
-      RWProductManager.getTimeTable();
-    }
-    if ($('#vacations_list_view').length > 0){
-      RWProductManager.getVacations();
-    }
   },
   initStates: function(){
+    $.mobile.ajaxEnabled = false;
+    $(document).ajaxStart(function() {
+      $.mobile.showPageLoadingMsg();
+    });
+    $(document).ajaxStop(function() {
+      $.mobile.hidePageLoadingMsg();
+    });
     $.ajaxSetup({
-      timeout: 3000
+      timeout: 3000,
+      crossDomain: true,
+      dataType: 'json',
+      headers:{
+        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
+        "Accept": "application/json,text/javascript,application/javascript,text/html"
+      }
     });
     if (RWProductManager.getOpenidIdentifier()){
       $('#login_button_settings .ui-btn-text').text('Revoke access from system');
@@ -48,7 +61,7 @@ RWProductManager = {
   getPivotalStories: function(){
     $('#pivotal_list_view').html('');
     $.ajax({
-      url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
+      url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories",
       dataType: 'json',
       success: function(data) {
         var list_data = '';
@@ -78,65 +91,6 @@ RWProductManager = {
         
         $('#pivotal_list_view').html(list_data).attr("data-role", "collapsible-set").addClass('ui-collapsible-set');
         $('#pivotal_list_view div[data-role="collapsible"]').collapsible();
-      }
-    });
-  },
-  getTimeTable: function(){
-    $('#time_list_view').html('');
-    /*
-    $.ajax({
-      url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
-      dataType: 'json',
-      success: function(data) {
-        var list_data = '';
-        $.each(data, function(index, value) { 
-          if (value.title != null){
-            list_data += '<div data-role="collapsible">';
-            list_data += '<h3>' + value.title + '</h3>';
-            list_data += '<p>';
-            if (value.url){
-              list_data += '<p><strong>Title:</strong> <a href="' + value.url + '" target="_blank">';
-              list_data += value.title;
-              list_data += '</a></p>';
-            } else {
-              list_data += '<p><strong>Title:</strong> ' + value.title + '</p>';
-            }
-            list_data += '<p><strong>Status:</strong> ' + value.status + '</p>';
-            if (value.story_type){
-              list_data += '<p><strong>Type:</strong> ' + value.story_type + '</p>';
-            }
-            if (value.description){
-              list_data += '<p><strong>Descr:</strong> ' + value.description + '</p>';
-            }
-            list_data += '</p>';
-            list_data += '</div>';
-          }
-        });
-        
-        $('#time_list_view').html(list_data).attr("data-role", "listview").listview();
-        $('#time_list_view').listview('refresh');
-      }
-    });
-    */
-  },
-  getVacations: function(){
-    $('#vacations_list_view').html('');
-    $.ajax({
-      url: "http://" + RWProductManager.openIdHost + "/api/mobile/vacations.json?openid_identifier=" + RWProductManager.getOpenidIdentifier(),
-      dataType: 'json',
-      success: function(data) {
-        var list_data = '';
-        $.each(data, function(index, value) { 
-          list_data += '<li>';
-          list_data += '<a href="#">';
-          list_data += value.reason;
-          list_data += ' (' + value.from_date + ' ' + value.to_date + ')';
-          list_data += '</a>';
-          list_data += '</li>';
-        });
-        
-        $('#vacations_list_view').html(list_data).attr("data-role", "listview").listview();
-        $('#vacations_list_view').listview('refresh');
       }
     });
   },
@@ -199,18 +153,6 @@ RWProductManager = {
   }
 };
 
-$(document).bind("pageload", function(){
-  RWProductManager.init();
-});
 $(function() {
-  /*
-  $(document).ajaxStart(function() {
-    $.mobile.showPageLoadingMsg();
-  });
-  $(document).ajaxStop(function() {
-    $.mobile.hidePageLoadingMsg();
-  });
-  */
   RWProductManager.init();
-  document.addEventListener("deviceready", RWProductManager.onDeviceReady, false);
 });
