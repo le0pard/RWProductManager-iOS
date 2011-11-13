@@ -1,6 +1,8 @@
 RWProductManager = {
   childBrowser: null,
   openIdHost: "localhost:3000",
+  jQT: null,
+  
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
   },
@@ -28,27 +30,35 @@ RWProductManager = {
       RWProductManager.initStates();
       return false;
     });
-    
-    if ($('#pivotal_list_view').length > 0){
-      RWProductManager.getPivotalStories();
-    }
   },
   initStates: function(){
-    $.mobile.ajaxEnabled = false;
+    
+    this.jQT = new $.jQTouch({
+        icon: 'jqtouch.png',
+        addGlossToIcon: false,
+        startupScreen: 'jqt_startup.png',
+        statusBar: 'black',
+        preloadImages: [
+            '../stylesheets/vendors/img/back_button.png',
+            '../stylesheets/vendors/img/back_button_clicked.png',
+            '../stylesheets/vendors/img/button_clicked.png',
+            '../stylesheets/vendors/img/grayButton.png',
+            '../stylesheets/vendors/img/whiteButton.png',
+            '../stylesheets/vendors/img/loading.gif'
+        ]
+    });
+    
     $(document).ajaxStart(function() {
-      $.mobile.showPageLoadingMsg();
+      //$.mobile.showPageLoadingMsg();
     });
     $(document).ajaxStop(function() {
-      $.mobile.hidePageLoadingMsg();
+      //$.mobile.hidePageLoadingMsg();
     });
     $.ajaxSetup({
       timeout: 3000,
       crossDomain: true,
       dataType: 'json',
-      headers:{
-        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
-        "Accept": "application/json,text/javascript,application/javascript,text/html"
-      }
+      headers: RWProductManager.defaultHeaders
     });
     if (RWProductManager.getOpenidIdentifier()){
       $('#login_button_settings .ui-btn-text').text('Revoke access from system');
