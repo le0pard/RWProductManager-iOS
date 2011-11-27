@@ -29,6 +29,7 @@ RWManagerVacations = {
       template: _.template($('#vacation-template').html()),
 
       events: {
+        'tap a' : 'selectedVacation'
       },
 
       initialize: function() {
@@ -39,6 +40,10 @@ RWManagerVacations = {
       render: function() {
         $(this.el).html(this.template(this.model.toJSON())).addClass('arrow');
         return this;
+      },
+      
+      selectedVacation: function(){
+        console.log(this.model.get('description'));
       }
 
     });
@@ -53,9 +58,6 @@ RWManagerVacations = {
         events: {
         },
 
-        // At initialization we bind to the relevant events on the `Todos`
-        // collection, when items are added or changed. Kick things off by
-        // loading any preexisting todos that might be saved in *localStorage*.
         initialize: function() {
           RWManagerVacations.Vacations.bind('add',   this.addOne, this);
           RWManagerVacations.Vacations.bind('reset', this.addAll, this);
@@ -70,8 +72,8 @@ RWManagerVacations = {
 
         // Add a single todo item to the list by creating a view for it, and
         // appending its element to the `<ul>`.
-        addOne: function(todo) {
-          var view = new RWManagerVacations.VacationView({model: todo});
+        addOne: function(vacation) {
+          var view = new RWManagerVacations.VacationView({model: vacation});
           this.$("#vacations_list").append(view.render().el);
         },
 

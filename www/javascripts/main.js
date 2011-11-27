@@ -1,7 +1,7 @@
 var jQT = new $.jQTouch({
     icon: 'jqtouch.png',
     addGlossToIcon: false,
-    startupScreen: 'jqt_startup.png',
+    startupScreen: '../images/jqt_startup.png',
     statusBar: 'black',
     preloadImages: [
         '../stylesheets/vendors/img/back_button.png',
@@ -70,6 +70,13 @@ RWProductManager = {
           $('#vacations_list').html('');
         }
         $(this).data('referrer'); // return the link which triggered the animation, if possible
+    });
+    
+    $('#vacation').bind('pageAnimationEnd', function(e,info){
+      if (info.direction == 'in') {
+        //do something
+      }
+      $(this).data('referrer');
     });
     
     $('#settings').bind('pageAnimationEnd', function(event, info){
