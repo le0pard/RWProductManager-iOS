@@ -1,7 +1,21 @@
+var jQT = new $.jQTouch({
+    icon: 'jqtouch.png',
+    addGlossToIcon: false,
+    startupScreen: 'jqt_startup.png',
+    statusBar: 'black',
+    preloadImages: [
+        '../stylesheets/vendors/img/back_button.png',
+        '../stylesheets/vendors/img/back_button_clicked.png',
+        '../stylesheets/vendors/img/button_clicked.png',
+        '../stylesheets/vendors/img/grayButton.png',
+        '../stylesheets/vendors/img/whiteButton.png',
+        '../stylesheets/vendors/img/loading.gif'
+    ]
+});
+
 RWProductManager = {
   childBrowser: null,
   openIdHost: "localhost:3000",
-  jQT: null,
   
   openIDLink: function(){
     return "http://" + RWProductManager.openIdHost + "/api/mobile/user_sessions/new"; 
@@ -18,93 +32,62 @@ RWProductManager = {
   init: function(){
     document.addEventListener("deviceready", this.onDeviceReady, false);
     this.initElements();
+    this.initPages();
+    
+    RWManagerVacations.init();
   },
   initElements: function(){
     this.initStates();
-    $('#login_button_settings').click(function(event){
+    
+    /* settings */
+    $('#login_button_settings').tap(function(event){
       if (RWProductManager.getOpenidIdentifier()){
         RWProductManager.deleteOpenidIdentifier();
+        $('#login_button_settings').text('Login to system');
       } else {
         RWProductManager.openOauthUrl();
       }
-      RWProductManager.initStates();
       return false;
     });
   },
   initStates: function(){
-    
-    this.jQT = new $.jQTouch({
-        icon: 'jqtouch.png',
-        addGlossToIcon: false,
-        startupScreen: 'jqt_startup.png',
-        statusBar: 'black',
-        preloadImages: [
-            '../stylesheets/vendors/img/back_button.png',
-            '../stylesheets/vendors/img/back_button_clicked.png',
-            '../stylesheets/vendors/img/button_clicked.png',
-            '../stylesheets/vendors/img/grayButton.png',
-            '../stylesheets/vendors/img/whiteButton.png',
-            '../stylesheets/vendors/img/loading.gif'
-        ]
-    });
-    
-    $(document).ajaxStart(function() {
-      //$.mobile.showPageLoadingMsg();
-    });
-    $(document).ajaxStop(function() {
-      //$.mobile.hidePageLoadingMsg();
-    });
     $.ajaxSetup({
       timeout: 3000,
       crossDomain: true,
       dataType: 'json',
-      headers: RWProductManager.defaultHeaders
-    });
-    if (RWProductManager.getOpenidIdentifier()){
-      $('#login_button_settings .ui-btn-text').text('Revoke access from system');
-      $('#login_button_settings .ui-icon').removeClass('ui-icon-info').addClass('ui-icon-delete');
-    } else {
-      $('#login_button_settings .ui-btn-text').text('Login to system');
-      $('#login_button_settings .ui-icon').removeClass('ui-icon-delete').addClass('ui-icon-info');
-    }
-  },
-  getPivotalStories: function(){
-    $('#pivotal_list_view').html('');
-    $.ajax({
-      url: "http://" + RWProductManager.openIdHost + "/api/mobile/pivotal_stories",
-      dataType: 'json',
-      success: function(data) {
-        var list_data = '';
-        $.each(data, function(index, value) { 
-          if (value.title != null){
-            list_data += '<div data-role="collapsible">';
-            list_data += '<h3>' + value.title + '</h3>';
-            list_data += '<p>';
-            if (value.url){
-              list_data += '<p><strong>Title:</strong> <a href="' + value.url + '" target="_blank">';
-              list_data += value.title;
-              list_data += '</a></p>';
-            } else {
-              list_data += '<p><strong>Title:</strong> ' + value.title + '</p>';
-            }
-            list_data += '<p><strong>Status:</strong> ' + value.status + '</p>';
-            if (value.story_type){
-              list_data += '<p><strong>Type:</strong> ' + value.story_type + '</p>';
-            }
-            if (value.description){
-              list_data += '<p><strong>Descr:</strong> ' + value.description + '</p>';
-            }
-            list_data += '</p>';
-            list_data += '</div>';
-          }
-        });
-        
-        $('#pivotal_list_view').html(list_data).attr("data-role", "collapsible-set").addClass('ui-collapsible-set');
-        $('#pivotal_list_view div[data-role="collapsible"]').collapsible();
+      headers: {
+        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
+        "Accept": "application/json,text/javascript,application/javascript,text/html"
       }
     });
   },
   
+  initPages: function(){
+    $('#vacations').bind('pageAnimationEnd', function(event, info){
+        if (info.direction == 'in') {
+          RWManagerVacations.Vacations.fetch();
+        } else {
+          $('#vacations_list').html('');
+        }
+        $(this).data('referrer'); // return the link which triggered the animation, if possible
+    });
+    
+    $('#settings').bind('pageAnimationEnd', function(event, info){
+      if (info.direction == 'in') {     
+        RWProductManager.initSettings();
+      }
+    });
+  },
+  
+  initSettings: function(){    
+    if (RWProductManager.getOpenidIdentifier()){
+      $('#login_button_settings').text('Revoke access from system');
+    } else {
+      $('#login_button_settings').text('Login to system');
+    }
+  },
+  
+  /* child browser */
   onDeviceReady: function(){
     if (!RWProductManager.childBrowser){
       if ((typeof window.plugins !== "undefined" && window.plugins !== null)) {
@@ -120,8 +103,7 @@ RWProductManager = {
     }
   },
   
-  openChildBrowser: function(url)
-  {
+  openChildBrowser: function(url){
     try {
       RWProductManager.childBrowser.showWebPage(url);
     } catch (err) {
@@ -149,8 +131,8 @@ RWProductManager = {
       if (null !== link_results){
         if (link_results[1]){
           RWProductManager.setOpenidIdentifier(link_results[1]);
-          RWProductManager.initStates();
           RWProductManager.childBrowser.close();
+          RWProductManager.initSettings();
         }
       }
     }

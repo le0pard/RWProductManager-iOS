@@ -16,9 +16,10 @@
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/json2.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/underscore.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/backbone.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../javascripts/phonegap-1.1.0.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../javascripts/ChildBrowser.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../javascripts/iphone/phonegap-1.2.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../javascripts/iphone/childbrowser.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/main.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/vacations.js"></script>
 <!--
   <script type="text/javascript">
 
@@ -60,60 +61,54 @@
   </head>
   <body>
     <div id="about" class="selectable">
-            <p><img src="jqtouch.png" /></p>
-            <p><strong>jQTouch</strong><br />Version 1.0 beta<br />
-                <a href="http://www.davidkaneda.com">By David Kaneda</a></p>
-            <p><em>Create powerful mobile apps with<br /> just HTML, CSS, and jQuery.</em></p>
-            <p>
-                <a href="http://twitter.com/jqtouch" target="_blank">@jQTouch on Twitter</a>
-            </p>
-            <p><br /><br /><a href="#" class="grayButton goback">Close</a></p>
+      <p><strong>RW Manager</strong><br />Version 1.0<br />
+      <a href="http://leopard.in.ua">By Alexey Vasiliev</a></p>
+      <p><br /><br /><a href="#" class="grayButton goback">Close</a></p>
     </div>
     
     <div id="home" class="current">
-        <div class="toolbar">
-            <h1>jQTouch</h1>
-            <a class="button slideup" id="infoButton" href="#about">About</a>
-        </div>
-        <ul class="rounded">
-            <li class="arrow"><a href="#ui">User Interface</a> <small class="counter">4</small></li>
-            <li class="arrow"><a href="#animations">Animations</a> <small class="counter">8</small></li>
-            <li class="arrow"><a href="#ajax">AJAX</a> <small class="counter">3</small></li>
-            <li class="arrow"><a href="#callbacks">Callback Events</a> <small class="counter">3</small></li>
-            <li class="arrow"><a href="#extensions">Extensions</a> <small class="counter">4</small></li>
-            <li class="arrow"><a href="#demos">Demos</a> <small class="counter">2</small></li>
-        </ul>
-        <h2>External Links</h2>
-        <ul class="rounded">
-            <li class="forward"><a href="http://www.jqtouch.com/" target="_blank">Homepage</a></li>
-            <li class="forward"><a href="http://www.twitter.com/jqtouch" target="_blank">Twitter</a></li>
-            <li class="forward"><a href="http://code.google.com/p/jqtouch/w/list" target="_blank">Google Code</a></li>
-        </ul>
-        <ul class="individual">
-            <li><a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#100;&#107;&#064;&#109;&#111;&#114;&#102;&#117;&#110;&#107;&#046;&#099;&#111;&#109;" target="_blank">Email</a></li>
-            <li><a href="http://tinyurl.com/support-jqt" target="_blank">Donate</a></li>
-        </ul>
-        <div class="info">
-            <p>Add this page to your home screen to view the custom icon, startup screen, and full screen mode.</p>
-        </div>
+      <div class="toolbar">
+        <h1>RW Manager</h1>
+        <a class="button slideup" id="infoButton" href="#about">About</a>
+      </div>
+      <ul class="rounded">
+        <li class="arrow"><a href="#vacations">Vacations</a></li>
+        <li class="arrow"><a href="#settings">Settings</a></li>
+      </ul>
+      <div class="info">
+        <p>If something work wrong - write me on <a href="mailto:alexey.vasiliev@railsware.com">email</a>. Version 1.0.1</p>
+      </div>
     </div>
     
-    <div id="ui">
-        <div class="toolbar">
-            <h1>UI Demos</h1>
-            <a class="back" href="#">Home</a>
-        </div>
+    <!-- vacations -->
+    <div id="vacations">
+      <div class="toolbar">
+        <h1>Vacations</h1>
+        <a class="back" href="#">Home</a>
+      </div>
 
-        <h2>Lists</h2>
-        <ul class="rounded">
-            <li class="arrow"><a href="#edge">Edge to Edge</a></li>
-            <li class="arrow"><a href="#plastic">Plastic</a></li>
-            <li class="arrow"><a href="#metal">Metal</a></li>
+      <h2>Vacations</h2>
+      <div id="vacations_box">
+        <ul id="vacations_list" class="rounded">
         </ul>
-        <h2>Forms</h2>
-        <ul class="rounded">
-            <li class="arrow"><a href="#forms">Forms</a></li>
-        </ul>
+      </div>
+    </div>
+    
+    <script type="text/template" id="vacation-template">
+      <a href="#"><%= description %></a>
+    </script>
+    
+    
+   <!-- Settings -->
+   <div id="settings">
+      <div class="toolbar">
+        <h1>Settings</h1>
+        <a class="back" href="#">Home</a>
+      </div>
+      <h2>Authorization</h2>
+      <ul class="rounded">
+        <li class="forward"><a id="login_button_settings" href="#">Login to system</a></li>
+      </ul>
     </div>
     
     

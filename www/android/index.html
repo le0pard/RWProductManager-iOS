@@ -8,11 +8,15 @@
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
 	-->
-  <link rel="stylesheet" href="../stylesheets/vendors/jquery.mobile-1.0rc2.min.css" />
+  <link rel="stylesheet" href="../stylesheets/vendors/jqtouch.css" />
+  <link rel="stylesheet" href="../stylesheets/vendors/theme.css" />
+  <link rel="stylesheet" href="../stylesheets/main.css" />
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery-1.6.4.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery.mobile-1.0rc2.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jqtouch.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/json2.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../javascripts/android/phonegap-1.1.0.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/underscore.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/backbone.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../javascripts/android/phonegap-1.2.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="../javascripts/android/childbrowser.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/main.js"></script>
 <!--
@@ -55,27 +59,53 @@
 -->
   </head>
   <body>
-    <div id="main_product_manager" data-role="page" data-title="RW Product Manager">
+    <div id="about" class="selectable">
+      <p><strong>RW Manager</strong><br />Version 1.0<br />
+      <a href="http://leopard.in.ua">By Alexey Vasiliev</a></p>
+      <p><br /><br /><a href="#" class="grayButton goback">Close</a></p>
+    </div>
+    
+    <div id="home" class="current">
+      <div class="toolbar">
+        <h1>RW Manager</h1>
+        <a class="button slideup" id="infoButton" href="#about">About</a>
+      </div>
+      <ul class="rounded">
+        <li class="arrow"><a href="#vacations">Vacations</a></li>
+        <li class="arrow"><a href="#settings">Settings</a></li>
+      </ul>
+      <div class="info">
+        <p>If something work wrong - write me on <a href="mailto:alexey.vasiliev@railsware.com">email</a>. Version 1.0.1</p>
+      </div>
+    </div>
+    
+    <div id="vacations">
+      <div class="toolbar">
+        <h1>Vacations</h1>
+        <a class="back" href="#">Home</a>
+      </div>
 
-    	<div data-role="header" data-position="fixed">
-    		<h1>Pivotal tasks</h1>
-    	</div><!-- /header -->
-
-    	<div data-role="content">
-    	  <div id="pivotal_list_view"></div>		
-    	</div><!-- /content -->
-
-    	<div data-role="footer" data-position="fixed">
-    		<div data-role="navbar" data-iconpos="bottom">
-      		<ul>
-      			<li><a href="index.html" data-icon="home" data-transition="fade" class="ui-btn-active">Home</a></li>
-      			<li><a href="time.html" data-icon="grid" data-transition="fade">Time</a></li>
-      			<li><a href="vacations.html" data-icon="info" data-transition="fade">Vacations</a></li>
-      			<li><a href="settings.html" data-icon="gear" data-transition="fade">Settings</a></li>
-      		</ul>
-      	</div><!-- /navbar -->
-    	</div><!-- /footer -->
-    	
-    </div><!-- /page -->
+      <h2>Lists</h2>
+      <ul class="rounded">
+        <li class="arrow"><a href="#edge">Edge to Edge</a></li>
+        <li class="arrow"><a href="#plastic">Plastic</a></li>
+        <li class="arrow"><a href="#metal">Metal</a></li>
+      </ul>
+    </div>
+    
+    
+    <!-- Settings -->
+     <div id="settings">
+        <div class="toolbar">
+          <h1>Settings</h1>
+          <a class="back" href="#">Home</a>
+        </div>
+        <h2>Authorization</h2>
+        <ul class="rounded">
+          <li class="forward"><a id="login_button_settings" href="#">Login to system</a></li>
+        </ul>
+      </div>
+    
+    
   </body>
 </html>
