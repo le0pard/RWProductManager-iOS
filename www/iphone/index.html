@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../stylesheets/vendors/jqtouch.css" />
   <link rel="stylesheet" href="../stylesheets/vendors/theme.css" />
   <link rel="stylesheet" href="../stylesheets/main.css" />
-  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery-1.6.4.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery-1.7.1.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jqtouch.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/json2.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/underscore.js"></script>
@@ -98,7 +98,7 @@
     </div>
     
     <script type="text/template" id="vacation-template">
-      <a href="#vacation" rel="<%= id %>"><%= description %></a>
+      <a href="#vacation" rel="<%= id %>"><%= from_date %> - <%= to_date %></a>
     </script>
     
     <div id="vacation">
@@ -107,10 +107,14 @@
         <a class="back" href="#">Back</a>
       </div>
 
-      <h2>Vacation</h2>
-      <div id="vacation_box">
-        
-      </div>
+      <form>
+        <input type="hidden" id="vacation_id" value="" />
+        <ul class="edit rounded">
+            <li>
+              <input type="text" name="description" placeholder="Description" id="vacation_description" />
+            </li>
+        </ul>
+      </form>
     </div>
     
     <div id="add_vacation">
@@ -118,11 +122,28 @@
         <h1>Add Vacation</h1>
         <a href="#"></a>
         <a class="cancel" href="#">Cancel</a>
+        <a class="button" id="add_vacation_submit" href="#">Add</a>
       </div>
 
-      <div id="add_vacation_box">
-        
-      </div>
+      <form id="add_vacation_form">
+        <ul class="edit rounded">
+          <li>
+            <select id="add_vacation__reason" name="add_vacation_reason">
+              <option value="vacation">vacation</option>
+              <option value="illness">illness</option>
+            </select>
+          </li>
+          <li>
+            <input type="text" name="description" placeholder="Description" id="add_vacation_description" />
+          </li>
+          <li>
+            <input type="date" name="from_date" placeholder="From date" id="add_vacation_from_date" />
+          </li>
+          <li>
+            <input type="date" name="to_date" placeholder="To date" id="add_vacation_to_date" />
+          </li>
+        </ul>
+      </form>
     </div>
     
     

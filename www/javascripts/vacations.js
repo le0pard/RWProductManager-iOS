@@ -43,7 +43,8 @@ RWManagerVacations = {
       },
       
       selectedVacation: function(){
-        console.log(this.model.get('description'));
+        $('#vacation_id').val(this.model.get('id'));
+        $('#vacation_description').val(this.model.get('description'));
       }
 
     });

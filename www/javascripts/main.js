@@ -39,6 +39,12 @@ RWProductManager = {
   initElements: function(){
     this.initStates();
     
+    /* vacations */
+    $('#add_vacation_submit').tap(function(event){
+      jQT.goTo('#vacations', 'slidedown');
+      return false;
+    });
+    
     /* settings */
     $('#login_button_settings').tap(function(event){
       if (RWProductManager.getOpenidIdentifier()){
@@ -75,6 +81,12 @@ RWProductManager = {
     $('#vacation').bind('pageAnimationEnd', function(e,info){
       if (info.direction == 'in') {
         //do something
+      }
+      $(this).data('referrer');
+    });
+    $('#add_vacation').bind('pageAnimationEnd', function(e,info){
+      if (info.direction == 'in') {
+        $('#add_vacation_form').find('input').val('');
       }
       $(this).data('referrer');
     });
