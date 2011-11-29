@@ -41,8 +41,17 @@ RWProductManager = {
     
     /* vacations */
     $('#add_vacation_submit').tap(function(event){
-      jQT.goTo('#vacations', 'slidedown');
+      jQT.goBack();
       return false;
+    });
+    
+    var date = new Date();
+    $('#add_vacation_from_date, #add_vacation_to_date').scroller({ 
+      preset: 'date',
+      dateFormat: 'yy-mm-dd',
+      dateOrder: 'ddmmyy',
+      endYear: date.getFullYear() + 2,
+      startYear: date.getFullYear() - 1
     });
     
     /* settings */

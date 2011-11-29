@@ -10,12 +10,14 @@
 	-->
   <link rel="stylesheet" href="../stylesheets/vendors/jqtouch.css" />
   <link rel="stylesheet" href="../stylesheets/vendors/theme.css" />
+  <link rel="stylesheet" href="../stylesheets/vendors/mobiscroll-1.5.2.min.css" />
   <link rel="stylesheet" href="../stylesheets/main.css" />
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jquery-1.7.1.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/jqtouch.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/json2.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/underscore.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/backbone.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/vendors/mobiscroll-1.5.2.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="../javascripts/iphone/phonegap-1.2.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="../javascripts/iphone/childbrowser.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/main.js"></script>
@@ -137,10 +139,10 @@
             <input type="text" name="description" placeholder="Description" id="add_vacation_description" />
           </li>
           <li>
-            <input type="date" name="from_date" placeholder="From date" id="add_vacation_from_date" />
+            <input type="text" name="from_date" placeholder="From date" id="add_vacation_from_date" readonly="readonly" value="2011-09-30" />
           </li>
           <li>
-            <input type="date" name="to_date" placeholder="To date" id="add_vacation_to_date" />
+            <input type="text" name="to_date" placeholder="To date" id="add_vacation_to_date" readonly="readonly" value="2011-09-30" />
           </li>
         </ul>
       </form>
