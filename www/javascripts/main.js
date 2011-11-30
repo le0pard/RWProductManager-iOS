@@ -26,7 +26,7 @@ RWProductManager = {
   defaultHeaders: function(){
     return {
       "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
-      "Accept": "application/json,text/javascript,application/javascript,text/html"
+      "Accept": "application/json, text/javascript, application/javascript, text/html"
     };
   },
   init: function(){
@@ -41,17 +41,34 @@ RWProductManager = {
     
     /* vacations */
     $('#add_vacation_submit').tap(function(event){
-      jQT.goBack();
+      $('#add_vacation_errors').text('');
+      $('#add_vacation_form').find("input, select").removeClass('error');
+      
+      RWManagerVacations.Vacations.create({
+        description: $('#add_vacation_description').val(),
+        reason: $('#add_vacation_reason').val(),
+        from_date: $('#add_vacation_from_date').val(),
+        to_date: $('#add_vacation_to_date').val()
+      },
+      {
+        success: function(model, response){
+          jQT.goBack();
+          return true;
+        }, 
+        error: function(model, response){
+          var data = JSON.parse(response.responseText);
+          var error_text = [];
+          for (key in data){
+            $('#add_vacation_form').find("input[name='" + key + "']").addClass('error');
+            $('#add_vacation_form').find("select[name='" + key + "']").addClass('error');
+            error_text.push(data[key]);
+          }
+          $('#add_vacation_errors').text(error_text.join('; '));
+          return false;
+        }
+      });
+      
       return false;
-    });
-    
-    var date = new Date();
-    $('#add_vacation_from_date, #add_vacation_to_date').scroller({ 
-      preset: 'date',
-      dateFormat: 'yy-mm-dd',
-      dateOrder: 'ddmmyy',
-      endYear: date.getFullYear() + 2,
-      startYear: date.getFullYear() - 1
     });
     
     /* settings */
@@ -72,8 +89,17 @@ RWProductManager = {
       dataType: 'json',
       headers: {
         "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
-        "Accept": "application/json,text/javascript,application/javascript,text/html"
+        "Accept": "application/json, text/javascript, application/javascript, text/html"
       }
+    });
+    /* datepicker */
+    var date = new Date();
+    $('.datechoser').scroller({ 
+      preset: 'date',
+      dateFormat: 'yy-mm-dd',
+      dateOrder: 'ddmmyy',
+      startYear: date.getFullYear() - 1,
+      endYear: date.getFullYear() + 2
     });
   },
   
@@ -96,6 +122,8 @@ RWProductManager = {
     $('#add_vacation').bind('pageAnimationEnd', function(e,info){
       if (info.direction == 'in') {
         $('#add_vacation_form').find('input').val('');
+        $('#add_vacation_errors').text('');
+        $('#add_vacation_form').find("input, select").removeClass('error');
       }
       $(this).data('referrer');
     });

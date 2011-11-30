@@ -5,6 +5,7 @@ RWManagerVacations = {
   VacationView: null,
   AppView: null,
   App: null,
+  selectedModel: null,
   
   init: function(){
   
@@ -43,8 +44,12 @@ RWManagerVacations = {
       },
       
       selectedVacation: function(){
+        RWManagerVacations.selectedModel = this.model;
         $('#vacation_id').val(this.model.get('id'));
+        $('#vacation_reason').val(this.model.get('reason'));
         $('#vacation_description').val(this.model.get('description'));
+        $('#vacation_from_date').val(this.model.get('from_date'));
+        $('#vacation_to_date').val(this.model.get('to_date'));
       }
 
     });

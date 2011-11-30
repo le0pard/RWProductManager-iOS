@@ -107,13 +107,26 @@
       <div class="toolbar">
         <h1>Vacation</h1>
         <a class="back" href="#">Back</a>
+        <a class="button" id="vacation_submit" href="#">Edit</a>
       </div>
 
-      <form>
+      <form id="vacation_form">
         <input type="hidden" id="vacation_id" value="" />
         <ul class="edit rounded">
             <li>
+              <select id="vacation_reason" name="reason">
+                <option value="vacation">vacation</option>
+                <option value="illness">illness</option>
+              </select>
+            </li>
+            <li>
               <input type="text" name="description" placeholder="Description" id="vacation_description" />
+            </li>
+            <li>
+              <input type="text" class="datechoser" name="from_date" placeholder="From date" id="vacation_from_date" readonly="readonly" />
+            </li>
+            <li>
+              <input type="text" class="datechoser" name="to_date" placeholder="To date" id="vacation_to_date" readonly="readonly" />
             </li>
         </ul>
       </form>
@@ -130,7 +143,7 @@
       <form id="add_vacation_form">
         <ul class="edit rounded">
           <li>
-            <select id="add_vacation__reason" name="add_vacation_reason">
+            <select id="add_vacation_reason" name="reason">
               <option value="vacation">vacation</option>
               <option value="illness">illness</option>
             </select>
@@ -139,12 +152,13 @@
             <input type="text" name="description" placeholder="Description" id="add_vacation_description" />
           </li>
           <li>
-            <input type="text" name="from_date" placeholder="From date" id="add_vacation_from_date" readonly="readonly" value="2011-09-30" />
+            <input type="text" class="datechoser" name="from_date" placeholder="From date" id="add_vacation_from_date" readonly="readonly" />
           </li>
           <li>
-            <input type="text" name="to_date" placeholder="To date" id="add_vacation_to_date" readonly="readonly" value="2011-09-30" />
+            <input type="text" class="datechoser" name="to_date" placeholder="To date" id="add_vacation_to_date" readonly="readonly" />
           </li>
         </ul>
+        <div id="add_vacation_errors"></div>
       </form>
     </div>
     
