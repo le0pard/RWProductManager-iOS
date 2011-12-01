@@ -71,6 +71,75 @@ RWProductManager = {
       return false;
     });
     
+    /* update vacation */ 
+    $('#update_vacation_button').tap(function(event){
+      $('#vacation_errors').text('');
+      $('#vacation_form').find("input, select").removeClass('error');
+      
+      if (RWManagerVacations.selectedModel != null){
+        if ($('#vacation_id').val() == RWManagerVacations.selectedModel.get('id')){
+           RWManagerVacations.selectedModel.save({
+             reason: $('#vacation_reason').val(),
+             description: $('#vacation_description').val(),
+             from_date: $('#vacation_from_date').val(),
+             to_date: $('#vacation_to_date').val()
+           },
+           {
+             success: function(model, response){
+               jQT.goBack();
+               return true;
+             },
+             error: function(model, response){
+               var data = JSON.parse(response.responseText);
+               var error_text = [];
+               for (key in data){
+                 $('#vacation_form').find("input[name='" + key + "']").addClass('error');
+                 $('#vacation_form').find("select[name='" + key + "']").addClass('error');
+                 error_text.push(data[key]);
+               }
+               $('#vacation_errors').text(error_text.join('; '));
+               return false;
+             }
+           });
+        }
+      }
+      
+      return false;
+    });
+    
+    /* delete vacation */ 
+    $('#delete_vacation_button').tap(function(event){
+      $('#vacation_errors').text('');
+      $('#vacation_form').find("input, select").removeClass('error');
+      
+      if (RWManagerVacations.selectedModel != null){
+        if ($('#vacation_id').val() == RWManagerVacations.selectedModel.get('id')){
+          if (confirm('Are you sure?')){
+           RWManagerVacations.selectedModel.destroy(
+           {
+             success: function(model, response){
+               jQT.goBack();
+               return true;
+             },
+             error: function(model, response){
+               var data = JSON.parse(response.responseText);
+               var error_text = [];
+               for (key in data){
+                 $('#vacation_form').find("input[name='" + key + "']").addClass('error');
+                 $('#vacation_form').find("select[name='" + key + "']").addClass('error');
+                 error_text.push(data[key]);
+               }
+               $('#vacation_errors').text(error_text.join('; '));
+               return false;
+             }
+           });
+         }
+        }
+      }
+      
+      return false;
+    });
+    
     /* settings */
     $('#login_button_settings').tap(function(event){
       if (RWProductManager.getOpenidIdentifier()){
@@ -115,7 +184,8 @@ RWProductManager = {
     
     $('#vacation').bind('pageAnimationEnd', function(e,info){
       if (info.direction == 'in') {
-        //do something
+        $('#vacation_errors').text('');
+        $('#vacation_form').find("input, select").removeClass('error');
       }
       $(this).data('referrer');
     });

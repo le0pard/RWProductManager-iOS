@@ -107,7 +107,6 @@
       <div class="toolbar">
         <h1>Vacation</h1>
         <a class="back" href="#">Back</a>
-        <a class="button" id="vacation_submit" href="#">Edit</a>
       </div>
 
       <form id="vacation_form">
@@ -128,6 +127,11 @@
             <li>
               <input type="text" class="datechoser" name="to_date" placeholder="To date" id="vacation_to_date" readonly="readonly" />
             </li>
+        </ul>
+        <div id="vacation_errors"></div>
+        <ul class="individual">
+          <li><a href="#" id="update_vacation_button">Update</a></li>
+          <li><a href="#" id="delete_vacation_button">Delete</a></li>
         </ul>
       </form>
     </div>
