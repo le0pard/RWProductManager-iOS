@@ -175,6 +175,7 @@ RWProductManager = {
   initPages: function(){
     $('#vacations').bind('pageAnimationEnd', function(event, info){
         if (info.direction == 'in') {
+          RWManagerVacations.get_stats();
           RWManagerVacations.Vacations.fetch();
         } else {
           $('#vacations_list').html('');

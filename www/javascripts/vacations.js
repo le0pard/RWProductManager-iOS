@@ -94,4 +94,13 @@ RWManagerVacations = {
     
   },
   
+  get_stats: function(){
+    var url = 'http://' + RWProductManager.openIdHost + '/api/mobile/vacations/stats';
+    $.getJSON(url, function(data) {
+      $.each(data, function(key, val) {
+        $('#' + key + '_data').text(val);
+      });
+    });
+  }
+  
 };
