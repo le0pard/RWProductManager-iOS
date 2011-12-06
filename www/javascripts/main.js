@@ -34,6 +34,7 @@ RWProductManager = {
     this.initElements();
     this.initPages();
     
+    RWManagerTimes.init();
     RWManagerVacations.init();
   },
   initElements: function(){
@@ -173,6 +174,18 @@ RWProductManager = {
   },
   
   initPages: function(){
+    
+    $('#times').bind('pageAnimationEnd', function(event, info){
+        if (info.direction == 'in') {
+          RWManagerTimes.Times.fetch();
+        } else {
+          $('#times_list').html('');
+        }
+        $(this).data('referrer'); // return the link which triggered the animation, if possible
+    });
+    
+    
+    
     $('#vacations').bind('pageAnimationEnd', function(event, info){
         if (info.direction == 'in') {
           RWManagerVacations.get_stats();
@@ -182,7 +195,6 @@ RWProductManager = {
         }
         $(this).data('referrer'); // return the link which triggered the animation, if possible
     });
-    
     $('#vacation').bind('pageAnimationEnd', function(e,info){
       if (info.direction == 'in') {
         $('#vacation_errors').text('');
@@ -198,6 +210,8 @@ RWProductManager = {
       }
       $(this).data('referrer');
     });
+    
+    
     
     $('#settings').bind('pageAnimationEnd', function(event, info){
       if (info.direction == 'in') {     

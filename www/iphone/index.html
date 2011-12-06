@@ -21,6 +21,7 @@
 	<script type="text/javascript" charset="utf-8" src="../javascripts/iphone/phonegap-1.2.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="../javascripts/iphone/childbrowser.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/main.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../javascripts/times.js"></script>
   <script type="text/javascript" charset="utf-8" src="../javascripts/vacations.js"></script>
 <!--
   <script type="text/javascript">
@@ -76,12 +77,53 @@
         <a class="button slideup" id="infoButton" href="#about">About</a>
       </div>
       <ul class="rounded">
+        <li class="arrow"><a href="#times">Times</a></li>
         <li class="arrow"><a href="#vacations">Vacations</a></li>
         <li class="arrow"><a href="#settings">Settings</a></li>
       </ul>
       <div class="info">
         <p>If something work wrong - write me on <a href="mailto:alexey.vasiliev@railsware.com">email</a>. Version 1.0.1</p>
       </div>
+    </div>
+    
+    <!-- times -->
+    <div id="times">
+      <div class="toolbar">
+        <h1>Times</h1>
+        <a class="back" href="#">Home</a>
+        <a class="add slideup" id="add_vacation_button" href="#add_time">+</a>
+      </div>
+      <h2>Times</h2>
+      <div id="times_box">
+        <ul id="times_list" class="rounded">
+        </ul>
+      </div>
+    </div>
+    
+    <script type="text/template" id="time-template">
+      <a href="#time" rel="<%= id %>"><%= project.title %> | <%= date %> | <%= hours %> hours</a>
+    </script>
+    
+    <div id="add_time">
+      <div class="toolbar">
+        <h1>Add Time</h1>
+        <a href="#"></a>
+        <a class="cancel" href="#">Cancel</a>
+        <a class="button" id="add_vacation_submit" href="#">Add</a>
+      </div>
+
+      <form id="add_time_form">
+        <ul class="edit rounded">
+          <li>
+            <select id="add_time_account_ids" name="account_ids">
+            </select>
+          </li>
+          <li>
+            <input type="text" class="datechoser" name="date" placeholder="Date" id="add_time_date" readonly="readonly" />
+          </li>
+        </ul>
+        <div id="add_time_errors"></div>
+      </form>
     </div>
     
     <!-- vacations -->
