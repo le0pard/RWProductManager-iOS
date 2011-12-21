@@ -7,6 +7,8 @@ RWManagerTimes = {
   App: null,
   selectedModel: null,
   
+  projectsList: null,
+  
   init: function(){
   
     RWManagerTimes.Time = Backbone.Model.extend({
@@ -45,7 +47,7 @@ RWManagerTimes = {
       
       selectedTime: function(){
         RWManagerTimes.selectedModel = this.model;
-        $('#time_id').val(this.model.get('id'));
+        RWManagerTimes.get_edit_form_data(this.model);
       }
 
     });
@@ -88,6 +90,83 @@ RWManagerTimes = {
       
       RWManagerTimes.App = new RWManagerTimes.AppView;
     
+  },
+  
+  get_add_form_data: function() {
+    $.ajax({
+      url: 'http://' + RWProductManager.openIdHost + '/api/mobile/time_entries/get_accounts_and_categories',
+      success: function(data){
+        $('#add_time_accounts').empty();
+        if (data['accounts']){
+          var account_options = "";
+          $.each(data['accounts'], function(key, value) { 
+            account_options += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+          });
+          $('#add_time_accounts').html(account_options);
+        }
+        
+        RWManagerTimes.projectsList = data['projects'];
+        
+        $('#add_time_categories').empty();
+        if (data['categories']){
+          var categories_options = "";
+          $.each(data['categories'], function(key, value) { 
+            categories_options += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+          });
+          $('#add_time_categories').html(categories_options);
+        }
+        
+        RWManagerTimes.update_projects_by_account($('#add_time_accounts').val());
+      }
+    });
+  },
+  
+  get_edit_form_data: function(model) {
+    $.ajax({
+      url: 'http://' + RWProductManager.openIdHost + '/api/mobile/time_entries/get_accounts_and_categories',
+      success: function(data){
+        $('#time_accounts').empty();
+        if (data['accounts']){
+          var account_options = "";
+          $.each(data['accounts'], function(key, value) { 
+            account_options += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+          });
+          $('#time_accounts').html(account_options);
+        }
+        
+        RWManagerTimes.projectsList = data['projects'];
+        
+        $('#time_categories').empty();
+        if (data['categories']){
+          var categories_options = "";
+          $.each(data['categories'], function(key, value) { 
+            categories_options += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+          });
+          $('#time_categories').html(categories_options);
+        }
+        
+        $('#time_id').val(model.get('id'));
+        $('#time_accounts').val(model.get('project')['account_id']);
+        $('#time_projects').val(model.get('project_id'));
+        $('#time_categories').val(model.get('category_id'));
+        $('#time_hours').val(model.get('hours'));
+        $('#time_description').val(model.get('description'));
+        $('#time_date').val(model.get('date'));
+        
+        RWManagerTimes.update_projects_by_account($('#time_accounts').val());
+      }
+    });
+  },
+  
+  update_projects_by_account: function(account_id){
+    $('select.time_projects_list').empty();
+    if (account_id && RWManagerTimes.projectsList[account_id]){
+      var projects_options = "";
+      $.each(RWManagerTimes.projectsList[account_id], function(key, value) { 
+        projects_options += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+      });
+      $('select.time_projects_list').html(projects_options);
+    }
   }
   
 };

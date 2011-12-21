@@ -40,6 +40,109 @@ RWProductManager = {
   initElements: function(){
     this.initStates();
     
+    /* times */
+    $('#add_time_submit').tap(function(event){
+      $('#add_time_errors').text('');
+      $('#add_time_form').find("input, select").removeClass('error');
+      
+      RWManagerTimes.Times.create({
+        project_id: $('#add_time_projects').val(),
+        category_id: $('#add_time_categories').val(),
+        hours: $('#add_time_hours').val(),
+        description: $('#add_time_description').val(),
+        date: $('#add_time_date').val()
+      },
+      {
+        success: function(model, response){
+          jQT.goBack();
+          return true;
+        }, 
+        error: function(model, response){
+          var data = JSON.parse(response.responseText);
+          var error_text = [];
+          for (key in data){
+            $('#add_time_form').find("input[name='" + key + "']").addClass('error');
+            $('#add_time_form').find("select[name='" + key + "']").addClass('error');
+            error_text.push(data[key]);
+          }
+          $('#add_time_errors').text(error_text.join('; '));
+          return false;
+        }
+      });
+      
+      return false;
+    });
+    
+    /* update time */ 
+    $('#update_time_button').tap(function(event){
+      $('#time_errors').text('');
+      $('#time_form').find("input, select").removeClass('error');
+      
+      if (RWManagerTimes.selectedModel != null){
+        if ($('#time_id').val() == RWManagerTimes.selectedModel.get('id')){
+           RWManagerTimes.selectedModel.save({
+             project_id: $('#time_projects').val(),
+             category_id: $('#time_categories').val(),
+             hours: $('#time_hours').val(),
+             description: $('#time_description').val(),
+             date: $('#time_date').val()
+           },
+           {
+             success: function(model, response){
+               jQT.goBack();
+               return true;
+             },
+             error: function(model, response){
+               var data = JSON.parse(response.responseText);
+               var error_text = [];
+               for (key in data){
+                 $('#time_form').find("input[name='" + key + "']").addClass('error');
+                 $('#time_form').find("select[name='" + key + "']").addClass('error');
+                 error_text.push(data[key]);
+               }
+               $('#time_errors').text(error_text.join('; '));
+               return false;
+             }
+           });
+        }
+      }
+      
+      return false;
+    });
+    
+    /* delete time */ 
+    $('#delete_time_button').tap(function(event){
+      $('#time_errors').text('');
+      $('#time_form').find("input, select").removeClass('error');
+      
+      if (RWManagerTimes.selectedModel != null){
+        if ($('#time_id').val() == RWManagerTimes.selectedModel.get('id')){
+          if (confirm('Are you sure?')){
+           RWManagerTimes.selectedModel.destroy(
+           {
+             success: function(model, response){
+               jQT.goBack();
+               return true;
+             },
+             error: function(model, response){
+               var data = JSON.parse(response.responseText);
+               var error_text = [];
+               for (key in data){
+                 $('#time_form').find("input[name='" + key + "']").addClass('error');
+                 $('#time_form').find("select[name='" + key + "']").addClass('error');
+                 error_text.push(data[key]);
+               }
+               $('#time_errors').text(error_text.join('; '));
+               return false;
+             }
+           });
+         }
+        }
+      }
+      
+      return false;
+    });
+    
     /* vacations */
     $('#add_vacation_submit').tap(function(event){
       $('#add_vacation_errors').text('');
@@ -141,6 +244,9 @@ RWProductManager = {
       return false;
     });
     
+    /* time accounts */
+    $(document).on("change", "select.time_accounts_list", function(event){ RWManagerTimes.update_projects_by_account($(event.target).val()); })
+    
     /* settings */
     $('#login_button_settings').tap(function(event){
       if (RWProductManager.getOpenidIdentifier()){
@@ -176,10 +282,19 @@ RWProductManager = {
   initPages: function(){
     
     $('#times').bind('pageAnimationEnd', function(event, info){
+        $('#times_list').empty();
         if (info.direction == 'in') {
           RWManagerTimes.Times.fetch();
-        } else {
-          $('#times_list').html('');
+        }
+        $(this).data('referrer'); // return the link which triggered the animation, if possible
+    });
+    
+    $('#add_time').bind('pageAnimationEnd', function(event, info){
+        if (info.direction == 'in') {
+          RWManagerTimes.get_add_form_data();
+          $('#add_time_form').find('input').val('');
+          $('#add_time_errors').text('');
+          $('#add_time_form').find("input, select").removeClass('error');
         }
         $(this).data('referrer'); // return the link which triggered the animation, if possible
     });
@@ -187,11 +302,10 @@ RWProductManager = {
     
     
     $('#vacations').bind('pageAnimationEnd', function(event, info){
+        $('#vacations_list').empty();
         if (info.direction == 'in') {
           RWManagerVacations.get_stats();
           RWManagerVacations.Vacations.fetch();
-        } else {
-          $('#vacations_list').html('');
         }
         $(this).data('referrer'); // return the link which triggered the animation, if possible
     });

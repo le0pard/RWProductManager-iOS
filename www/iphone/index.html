@@ -109,20 +109,74 @@
         <h1>Add Time</h1>
         <a href="#"></a>
         <a class="cancel" href="#">Cancel</a>
-        <a class="button" id="add_vacation_submit" href="#">Add</a>
+        <a class="button" id="add_time_submit" href="#">Add</a>
       </div>
 
       <form id="add_time_form">
         <ul class="edit rounded">
           <li>
-            <select id="add_time_account_ids" name="account_ids">
+            <select id="add_time_accounts" name="accounts" class="time_accounts_list">
             </select>
+          </li>
+          <li>
+            <select id="add_time_projects" name="projects" class="time_projects_list">
+            </select>
+          </li>
+          <li>
+            <select id="add_time_categories" name="categories">
+            </select>
+          </li>
+          <li>
+            <input type="text" name="hours" placeholder="Hours" id="add_time_hours" />
+          </li>
+          <li>
+            <input type="text" name="description" placeholder="Description" id="add_time_description" />
           </li>
           <li>
             <input type="text" class="datechoser" name="date" placeholder="Date" id="add_time_date" readonly="readonly" />
           </li>
         </ul>
         <div id="add_time_errors"></div>
+      </form>
+    </div>
+    
+    <div id="time">
+      <div class="toolbar">
+        <h1>Edit Time</h1>
+        <a href="#"></a>
+        <a class="cancel" href="#">Cancel</a>
+      </div>
+
+      <form id="time_form">
+        <input type="hidden" id="time_id" value="" />
+        <ul class="edit rounded">
+          <li>
+            <select id="time_accounts" name="accounts" class="time_accounts_list">
+            </select>
+          </li>
+          <li>
+            <select id="time_projects" name="projects" class="time_projects_list">
+            </select>
+          </li>
+          <li>
+            <select id="time_categories" name="categories">
+            </select>
+          </li>
+          <li>
+            <input type="text" name="hours" placeholder="Hours" id="time_hours" />
+          </li>
+          <li>
+            <input type="text" name="description" placeholder="Description" id="time_description" />
+          </li>
+          <li>
+            <input type="text" class="datechoser" name="date" placeholder="Date" id="time_date" readonly="readonly" />
+          </li>
+        </ul>
+        <div id="time_errors"></div>
+        <ul class="individual">
+          <li><a href="#" id="update_time_button">Update</a></li>
+          <li><a href="#" id="delete_time_button">Delete</a></li>
+        </ul>
       </form>
     </div>
     
