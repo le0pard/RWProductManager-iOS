@@ -355,6 +355,10 @@ RWProductManager = {
       RWProductManager.childBrowser.onLocationChange = function(loc){ RWProductManager.childBrowserLocationChange(loc); };
       RWProductManager.childBrowser.onClose = function(){root.childBrowseronClose()};
       RWProductManager.childBrowser.onOpenExternal = function(){root.childBrowseronOpen();};
+      
+      if (!RWProductManager.getOpenidIdentifier()){
+        RWProductManager.openOauthUrl();
+      }
     }
   },
   
@@ -371,6 +375,15 @@ RWProductManager = {
   },
   setOpenidIdentifier: function(openid_identifier){
     window.localStorage.setItem("openid_identifier", openid_identifier);
+    $.ajaxSetup({
+      timeout: 3000,
+      crossDomain: true,
+      dataType: 'json',
+      headers: {
+        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
+        "Accept": "application/json, text/javascript, application/javascript, text/html"
+      }
+    });
   },
   deleteOpenidIdentifier: function(){
     window.localStorage.removeItem("openid_identifier");
