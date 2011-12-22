@@ -259,15 +259,7 @@ RWProductManager = {
     });
   },
   initStates: function(){
-    $.ajaxSetup({
-      timeout: 3000,
-      crossDomain: true,
-      dataType: 'json',
-      headers: {
-        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
-        "Accept": "application/json, text/javascript, application/javascript, text/html"
-      }
-    });
+    this.initAjax();
     /* datepicker */
     var date = new Date();
     $('.datechoser').scroller({ 
@@ -276,6 +268,18 @@ RWProductManager = {
       dateOrder: 'ddmmyy',
       startYear: date.getFullYear() - 1,
       endYear: date.getFullYear() + 2
+    });
+  },
+  
+  initAjax: function(){
+    $.ajaxSetup({
+      timeout: 3000,
+      crossDomain: true,
+      dataType: 'json',
+      headers: {
+        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
+        "Accept": "application/json, text/javascript, application/javascript, text/html"
+      }
     });
   },
   
@@ -375,15 +379,7 @@ RWProductManager = {
   },
   setOpenidIdentifier: function(openid_identifier){
     window.localStorage.setItem("openid_identifier", openid_identifier);
-    $.ajaxSetup({
-      timeout: 3000,
-      crossDomain: true,
-      dataType: 'json',
-      headers: {
-        "X-OPENID-IDENTIFIER": unescape(RWProductManager.getOpenidIdentifier()),
-        "Accept": "application/json, text/javascript, application/javascript, text/html"
-      }
-    });
+    this.initAjax();
   },
   deleteOpenidIdentifier: function(){
     window.localStorage.removeItem("openid_identifier");
